@@ -1,25 +1,71 @@
-import { StyleSheet, Text } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { Link } from "expo-router";
+import {
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Home() {
   return (
-    <SafeAreaView style={styles.screen}>
-      <Text style={styles.title}>Flappy Bird</Text>
-    </SafeAreaView>
+    <ImageBackground
+      source={require("@/assets/images/background.png")}
+      resizeMode="cover"
+      style={styles.background}
+    >
+      <SafeAreaView style={styles.screen}>
+        <Text style={styles.title}>Flappy Bird</Text>
+
+        <Link href="/play" asChild>
+          <TouchableOpacity style={styles.button}>
+            <LinearGradient
+              style={styles.buttonGradient}
+              colors={["#FF8A00", "#FFD600"]}
+            >
+              <Text style={styles.buttonText}>Jogar</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </Link>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    width: "100%",
+    height: "100%",
+  },
   screen: {
     width: "100%",
     height: "100%",
-    backgroundColor: "black",
     alignItems: "center",
   },
   title: {
     fontSize: 50,
     fontWeight: "bold",
+    color: "#FFD600",
+    marginTop: 30,
+  },
+  button: {
+    backgroundColor: "black",
+    borderRadius: 100,
+    position: "absolute",
+    top: "50%",
+  },
+  buttonGradient: {
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    width: "100%",
+    height: "100%",
+    borderRadius: 100,
+  },
+  buttonText: {
     color: "white",
-    marginTop: 100,
+    fontSize: 20,
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
   },
 });
