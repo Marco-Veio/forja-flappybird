@@ -1,6 +1,8 @@
+import MovingBackground from "@/components/MovingBackground";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
 import {
+  Image,
   ImageBackground,
   StyleSheet,
   Text,
@@ -21,14 +23,20 @@ export default function Home() {
         <Link href="/play" asChild>
           <TouchableOpacity style={styles.button}>
             <LinearGradient
-              style={styles.buttonGradient}
               colors={["#FF8A00", "#FFD600"]}
+              style={styles.buttonGradient}
             >
               <Text style={styles.buttonText}>Jogar</Text>
             </LinearGradient>
           </TouchableOpacity>
         </Link>
+
+        <Image
+          source={require("@/assets/images/bird.gif")}
+          style={styles.bird}
+        />
       </SafeAreaView>
+      <MovingBackground />
     </ImageBackground>
   );
 }
@@ -48,12 +56,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#FFD600",
     marginTop: 30,
+    fontFamily: "LuckiestGuy",
   },
   button: {
-    backgroundColor: "black",
     borderRadius: 100,
     position: "absolute",
     top: "50%",
+    shadowColor: "black",
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 3,
   },
   buttonGradient: {
     paddingHorizontal: 20,
@@ -67,5 +80,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 4,
+    textShadowColor: "black",
+    fontFamily: "LilitaOne",
+  },
+  bird: {
+    width: 70,
+    height: 48,
+    position: "absolute",
+    top: "35%",
+    left: "35%",
+    transform: [{ rotate: "-20deg" }],
   },
 });
