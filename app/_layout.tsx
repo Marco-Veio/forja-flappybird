@@ -1,3 +1,5 @@
+import { LilitaOne_400Regular } from "@expo-google-fonts/lilita-one";
+import { LuckiestGuy_400Regular } from "@expo-google-fonts/luckiest-guy";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
@@ -21,6 +23,8 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    LuckiestGuy: LuckiestGuy_400Regular,
+    LilitaOne: LilitaOne_400Regular,
     ...FontAwesome.font,
   });
 

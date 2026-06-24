@@ -1,6 +1,8 @@
+import MovingBackground from "@/components/MovingBackground";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
 import {
+  Image,
   ImageBackground,
   StyleSheet,
   Text,
@@ -28,6 +30,13 @@ export default function Home() {
             </LinearGradient>
           </TouchableOpacity>
         </Link>
+
+        <Image
+          source={require("@/assets/images/bird.png")}
+          style={styles.bird}
+        />
+
+        <MovingBackground />
       </SafeAreaView>
     </ImageBackground>
   );
@@ -46,14 +55,18 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 50,
     fontWeight: "bold",
+    fontFamily: "LuckiestGuy",
     color: "#FFD600",
     marginTop: 30,
   },
   button: {
-    backgroundColor: "black",
     borderRadius: 100,
     position: "absolute",
     top: "50%",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   },
   buttonGradient: {
     paddingHorizontal: 20,
@@ -65,7 +78,16 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 20,
-    textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 4,
+    // textShadowOffset: { width: 0, height: 2 },
+    // textShadowRadius: 4,
+    fontFamily: "LilitaOne",
+  },
+  bird: {
+    position: "absolute",
+    top: "40%",
+    left: "30%",
+    width: 70,
+    height: 48,
+    transform: [{ rotate: "-20deg" }],
   },
 });
