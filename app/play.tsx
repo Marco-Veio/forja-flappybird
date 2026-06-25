@@ -17,7 +17,7 @@ export default function Play() {
             style={styles.bird}
           />
 
-          <Pipe x={700} gapY={180} />
+          <Pipe gapY={195} onEnd={() => console.log("pipe end")} />
 
           <MovingBackground />
         </SafeAreaView>

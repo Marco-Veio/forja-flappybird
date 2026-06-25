@@ -1,29 +1,69 @@
 import { CAP_HEIGHT, GAP_SIZE, PIPE_WIDTH } from "@/constants/pipe";
-import React from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import React, { useEffect } from "react";
+import { Dimensions, StyleSheet } from "react-native";
+import Animated, {
+  Easing,
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 
-type Props = {
-  x: number;
+interface Props {
   gapY: number;
-};
+  onEnd: () => void;
+}
 
-export function Pipe({ x, gapY }: Props) {
-  const { height } = Dimensions.get("window");
+export function Pipe({ gapY, onEnd }: Props) {
+  const { height, width } = Dimensions.get("window");
   const topHeight = gapY - GAP_SIZE / 2;
   const bottomY = gapY + GAP_SIZE / 2;
   const bottomHeight = height - bottomY;
 
+  const offset = useSharedValue(0);
+
+  const anymatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: -offset.value }],
+  }));
+
+  useEffect(() => {
+    offset.value = withTiming(
+      width,
+      {
+        duration: 3000,
+        easing: Easing.linear,
+      },
+      () => runOnJS(onEnd)(),
+    );
+  }, [offset]);
+
   return (
     <>
-      <View style={[styles.pipe, { left: x, top: 0, height: topHeight }]} />
-      <View
-        style={[styles.cap, { left: x - 5, top: topHeight - CAP_HEIGHT }]}
+      <Animated.View
+        style={[
+          styles.pipe,
+          { left: width, top: 0, height: topHeight },
+          anymatedStyle,
+        ]}
+      />
+      <Animated.View
+        style={[
+          styles.cap,
+          { left: width - 5, top: topHeight - CAP_HEIGHT },
+          anymatedStyle,
+        ]}
       />
 
-      <View
-        style={[styles.pipe, { left: x, top: bottomY, height: bottomHeight }]}
+      <Animated.View
+        style={[
+          styles.pipe,
+          { left: width, top: bottomY, height: bottomHeight },
+          anymatedStyle,
+        ]}
       />
-      <View style={[styles.cap, { left: x - 5, top: bottomY }]} />
+      <Animated.View
+        style={[styles.cap, { left: width - 5, top: bottomY }, anymatedStyle]}
+      />
     </>
   );
 }
