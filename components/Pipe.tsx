@@ -1,4 +1,5 @@
 import { CAP_HEIGHT, GAP_SIZE, PIPE_WIDTH } from "@/constants/pipe";
+import { DURATION } from "@/constants/speed";
 import React, { useEffect } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import Animated, {
@@ -28,9 +29,9 @@ export function Pipe({ gapY, onEnd }: Props) {
 
   useEffect(() => {
     offset.value = withTiming(
-      width,
+      width + PIPE_WIDTH,
       {
-        duration: 3000,
+        duration: DURATION,
         easing: Easing.linear,
       },
       () => runOnJS(onEnd)(),
