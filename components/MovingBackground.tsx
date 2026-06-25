@@ -1,9 +1,34 @@
-import { Image, StyleSheet, View } from "react-native";
+import { useEffect } from "react";
+import { Dimensions, Image, StyleSheet, View } from "react-native";
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from "react-native-reanimated";
 
 export default function MovingBackground() {
+  const { width } = Dimensions.get("window");
+  const translateX = useSharedValue(0);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: -translateX.value }],
+  }));
+
+  useEffect(() => {
+    translateX.value = withRepeat(
+      withTiming(width, {
+        duration: 10000,
+        easing: Easing.linear,
+      }),
+      -1,
+    );
+  }, [translateX]);
+
   return (
     <View style={styles.screen}>
-      <View style={styles.container}>
+      <Animated.View style={[styles.container, animatedStyle]}>
         <Image
           style={styles.image}
           source={require("@/assets/images/ground.png")}
@@ -14,7 +39,7 @@ export default function MovingBackground() {
           source={require("@/assets/images/ground.png")}
           resizeMode="stretch"
         />
-      </View>
+      </Animated.View>
     </View>
   );
 }
