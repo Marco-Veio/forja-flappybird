@@ -1,3 +1,4 @@
+import GradientText from "@/components/GradientText";
 import MovingBackground from "@/components/MovingBackground";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
@@ -18,13 +19,22 @@ export default function Home() {
       style={styles.background}
     >
       <SafeAreaView style={styles.screen}>
-        <Text style={styles.title}>Flappy Bird</Text>
+        <GradientText
+          style={styles.title}
+          colors={["#FF8A00", "#FFD600"]}
+          start={[0, 0]}
+          end={[1, 1]}
+        >
+          Flappy Bird
+        </GradientText>
 
         <Link href="/play" asChild>
           <TouchableOpacity style={styles.button}>
             <LinearGradient
               style={styles.buttonGradient}
               colors={["#FF8A00", "#FFD600"]}
+              start={[0, 0]}
+              end={[1, 1]}
             >
               <Text style={styles.buttonText}>Jogar</Text>
             </LinearGradient>
@@ -56,8 +66,14 @@ const styles = StyleSheet.create({
     fontSize: 50,
     fontWeight: "bold",
     fontFamily: "LuckiestGuy",
-    color: "#FFD600",
     marginTop: 30,
+    textShadowColor: "rgba(0,0,0,0.5)",
+    textShadowOffset: {
+      width: 3,
+      height: 3,
+    },
+    textShadowRadius: 0,
+    paddingRight: 3,
   },
   button: {
     borderRadius: 100,
@@ -78,9 +94,11 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 20,
-    // textShadowOffset: { width: 0, height: 2 },
-    // textShadowRadius: 4,
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
+    textShadowColor: "#000",
     fontFamily: "LilitaOne",
+    paddingBottom: 4,
   },
   bird: {
     position: "absolute",
