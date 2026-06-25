@@ -1,3 +1,4 @@
+import { DURATION } from "@/constants/speed";
 import { useEffect } from "react";
 import { Dimensions, Image, StyleSheet, View } from "react-native";
 import Animated, {
@@ -19,7 +20,7 @@ export default function MovingBackground() {
   useEffect(() => {
     offset.value = withRepeat(
       withTiming(width, {
-        duration: 10000,
+        duration: DURATION,
         easing: Easing.linear,
       }),
       -1,
