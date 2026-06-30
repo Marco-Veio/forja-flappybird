@@ -1,4 +1,5 @@
 import MovingBackground from "@/components/MovingBackground";
+import Pipe from "@/components/Pipe";
 import { useAudioPlayer } from "expo-audio";
 import { Image, ImageBackground, Pressable, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -23,6 +24,8 @@ export default function Play() {
             source={require("@/assets/images/bird.png")}
             style={styles.bird}
           />
+
+          <Pipe gapY={195} />
         </SafeAreaView>
       </Pressable>
 
