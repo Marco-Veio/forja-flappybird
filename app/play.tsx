@@ -1,29 +1,56 @@
 import MovingBackground from "@/components/MovingBackground";
 import Pipe from "@/components/Pipe";
 import { DURATION } from "@/constants/animation";
+import { CAP_HEIGHT, GAP_SIZE } from "@/constants/pipe";
 import { useAudioPlayer } from "expo-audio";
 import { useEffect, useState } from "react";
-import { Image, ImageBackground, Pressable, StyleSheet } from "react-native";
+import {
+  Dimensions,
+  Image,
+  ImageBackground,
+  Pressable,
+  StyleSheet,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+interface Obstacle {
+  id: string;
+  gapY: number;
+}
+
 export default function Play() {
-  const [obstacles, setObstacles] = useState([] as string[]);
+  const { height } = Dimensions.get("window");
+  const [obstacles, setObstacles] = useState([] as Obstacle[]);
   const jumpSound = useAudioPlayer(require("@/assets/audios/wing.mp3"));
   const pointSound = useAudioPlayer(require("@/assets/audios/point.mp3"));
 
   function handleJump() {
-    jumpSound.seekTo(0);
-    jumpSound.play();
+    try {
+      jumpSound.seekTo(0);
+      jumpSound.play();
+    } catch (error) {}
   }
 
   function spawnObstacle() {
-    setObstacles((oldValue) => [...oldValue, Date.now().toString()]);
+    setObstacles((oldValue) => [
+      ...oldValue,
+      { id: Date.now().toString(), gapY: randomGapY() },
+    ]);
   }
 
   function removeObstacle(id: string) {
-    setObstacles((oldValue) => oldValue.filter((item) => item !== id));
-    pointSound.seekTo(0);
-    pointSound.play();
+    setObstacles((oldValue) => oldValue.filter((item) => item.id !== id));
+    try {
+      pointSound.seekTo(0);
+      pointSound.play();
+    } catch (error) {}
+  }
+
+  function randomGapY() {
+    const min = CAP_HEIGHT + GAP_SIZE / 2;
+    const max = height - CAP_HEIGHT - GAP_SIZE / 2;
+
+    return Math.random() * (max - min) + min;
   }
 
   useEffect(() => {
@@ -47,9 +74,9 @@ export default function Play() {
 
           {obstacles.map((obstacle) => (
             <Pipe
-              key={obstacle}
-              gapY={195}
-              onEnd={() => removeObstacle(obstacle)}
+              key={obstacle.id}
+              gapY={obstacle.gapY}
+              onEnd={() => removeObstacle(obstacle.id)}
             />
           ))}
         </SafeAreaView>
@@ -71,8 +98,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   bird: {
-    width: 70,
-    height: 48,
+    width: 53,
+    height: 36,
     position: "absolute",
     top: "50%",
     left: 100,

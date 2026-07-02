@@ -1,7 +1,7 @@
 import { DURATION } from "@/constants/animation";
 import { CAP_HEIGHT, GAP_SIZE, PIPE_WIDTH } from "@/constants/pipe";
 import { useEffect } from "react";
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, Image, StyleSheet } from "react-native";
 import Animated, {
   Easing,
   runOnJS,
@@ -46,14 +46,27 @@ export default function Pipe({ gapY, onEnd }: Props) {
           { left: width, top: 0, height: topHeight },
           animatedStyle,
         ]}
-      />
+      >
+        <Image
+          source={require("@/assets/images/pipe.png")}
+          style={[styles.image, { transform: [{ rotate: "180deg" }] }]}
+          resizeMode="stretch"
+        />
+      </Animated.View>
+
       <Animated.View
         style={[
           styles.cap,
           { left: width - 5, top: topHeight - CAP_HEIGHT },
           animatedStyle,
         ]}
-      />
+      >
+        <Image
+          source={require("@/assets/images/cap.png")}
+          style={[styles.image, { transform: [{ rotate: "180deg" }] }]}
+          resizeMode="stretch"
+        />
+      </Animated.View>
 
       <Animated.View
         style={[
@@ -61,10 +74,23 @@ export default function Pipe({ gapY, onEnd }: Props) {
           { left: width, top: bottomY, height: bottomHeight },
           animatedStyle,
         ]}
-      />
+      >
+        <Image
+          source={require("@/assets/images/pipe.png")}
+          style={styles.image}
+          resizeMode="stretch"
+        />
+      </Animated.View>
+
       <Animated.View
         style={[styles.cap, { left: width - 5, top: bottomY }, animatedStyle]}
-      />
+      >
+        <Image
+          source={require("@/assets/images/cap.png")}
+          style={styles.image}
+          resizeMode="stretch"
+        />
+      </Animated.View>
     </>
   );
 }
@@ -73,17 +99,14 @@ const styles = StyleSheet.create({
   pipe: {
     position: "absolute",
     width: PIPE_WIDTH,
-    backgroundColor: "#2ecc71",
-    borderLeftWidth: 4,
-    borderRightWidth: 4,
-    borderColor: "#1b5e20",
   },
   cap: {
     position: "absolute",
     width: PIPE_WIDTH + 10,
     height: CAP_HEIGHT,
-    backgroundColor: "#2ecc71",
-    borderWidth: 4,
-    borderColor: "#1b5e20",
+  },
+  image: {
+    width: "100%",
+    height: "100%",
   },
 });
