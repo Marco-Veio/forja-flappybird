@@ -1,9 +1,16 @@
-import { BIRD_ASPECT_RATIO, BIRD_HEIGHT, GRAVITY } from "@/constants/bird";
+import {
+  BIRD_ASPECT_RATIO,
+  BIRD_HEIGHT,
+  BIRD_X,
+  GRAVITY,
+} from "@/constants/bird";
 import { GROUND_HEIGHT } from "@/constants/ground";
 import { useGame } from "@/hooks/game";
+import { router } from "expo-router";
 import { useEffect } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import Animated, {
+  runOnJS,
   useAnimatedStyle,
   useFrameCallback,
 } from "react-native-reanimated";
@@ -21,7 +28,11 @@ export default function Bird() {
     birdY.value += velocity.value * t;
 
     if (birdY.value > height - BIRD_HEIGHT - GROUND_HEIGHT) {
-      birdY.value = height - BIRD_HEIGHT - GROUND_HEIGHT;
+      runOnJS(router.replace)("/game-over");
+    }
+
+    if (birdY.value < 0) {
+      birdY.value = 0;
       velocity.value = 0;
     }
   });
@@ -33,7 +44,12 @@ export default function Bird() {
   }, [frame]);
 
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: birdY.value }],
+    transform: [
+      { translateY: birdY.value },
+      {
+        rotate: `${(velocity.value / 1000) * 90}deg`,
+      },
+    ],
   }));
 
   return (
@@ -50,6 +66,6 @@ const styles = StyleSheet.create({
     height: BIRD_HEIGHT,
     position: "absolute",
     top: 0,
-    left: 100,
+    left: BIRD_X,
   },
 });
