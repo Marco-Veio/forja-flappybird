@@ -1,8 +1,7 @@
 import Bird from "@/components/Bird";
 import MovingBackground from "@/components/MovingBackground";
 import Pipe from "@/components/Pipe";
-import { DURATION } from "@/constants/animation";
-import { JUMP } from "@/constants/bird";
+import { DURATION, JUMP } from "@/constants/animation";
 import { GROUND_HEIGHT } from "@/constants/ground";
 import { CAP_HEIGHT, GAP_SIZE } from "@/constants/pipe";
 import { useGame } from "@/hooks/game";

@@ -1,10 +1,13 @@
 import { DURATION } from "@/constants/animation";
+import { BIRD } from "@/constants/bird";
 import { CAP_HEIGHT, GAP_SIZE, PIPE_WIDTH } from "@/constants/pipe";
+import { useGame } from "@/hooks/game";
 import { useEffect } from "react";
 import { Dimensions, Image, StyleSheet } from "react-native";
 import Animated, {
   Easing,
   runOnJS,
+  useAnimatedReaction,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -16,6 +19,7 @@ interface Props {
 }
 
 export default function Pipe({ gapY, onEnd }: Props) {
+  const { birdY, gameOver } = useGame();
   const { height, width } = Dimensions.get("window");
   const topHeight = gapY - GAP_SIZE / 2;
   const bottomY = gapY + GAP_SIZE / 2;
@@ -34,9 +38,33 @@ export default function Pipe({ gapY, onEnd }: Props) {
         duration: DURATION,
         easing: Easing.linear,
       },
-      () => runOnJS(onEnd)(),
+      () => {
+        if (translateX.value === width) {
+          runOnJS(onEnd)();
+        }
+      },
     );
   }, [translateX]);
+
+  useAnimatedReaction(
+    () => ({ birdY: birdY.value, translateX: translateX.value }),
+    ({ birdY, translateX }) => {
+      "worklet";
+
+      const hitX =
+        BIRD.x + BIRD.height * BIRD.aspectRatio - BIRD.hitbox.right >
+          width - translateX &&
+        BIRD.x + BIRD.hitbox.left < width - translateX + PIPE_WIDTH;
+
+      const hitTop = birdY < gapY - GAP_SIZE / 2;
+      const hitBottom = birdY + BIRD.height > gapY + GAP_SIZE / 2;
+
+      if (hitX && (hitTop || hitBottom)) {
+        console.log("teste");
+        runOnJS(gameOver)();
+      }
+    },
+  );
 
   return (
     <>
