@@ -60,7 +60,6 @@ export default function Pipe({ gapY, onEnd }: Props) {
       const hitBottom = birdY + BIRD.height > gapY + GAP_SIZE / 2;
 
       if (hitX && (hitTop || hitBottom)) {
-        console.log("teste");
         runOnJS(gameOver)();
       }
     },

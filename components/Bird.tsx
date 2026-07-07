@@ -8,12 +8,12 @@ import Animated, {
   runOnJS,
   useAnimatedStyle,
   useFrameCallback,
+  useSharedValue,
 } from "react-native-reanimated";
 
 export default function Bird() {
   const { height } = Dimensions.get("window");
   const { birdY, velocity, gameOver } = useGame();
-
   const frame = useFrameCallback((frameInfo) => {
     "worklet";
 
