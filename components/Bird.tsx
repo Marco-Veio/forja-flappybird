@@ -14,8 +14,12 @@ import Animated, {
 export default function Bird() {
   const { height } = Dimensions.get("window");
   const { birdY, velocity, gameOver } = useGame();
+  const disabled = useSharedValue(false);
+
   const frame = useFrameCallback((frameInfo) => {
     "worklet";
+
+    if (disabled.value) return;
 
     const t = (frameInfo.timeSincePreviousFrame ?? 0) / 1000;
 
@@ -26,6 +30,7 @@ export default function Bird() {
       birdY.value >
       height - BIRD.height + BIRD.hitbox.bottom - GROUND_HEIGHT
     ) {
+      disabled.value = true;
       runOnJS(gameOver)();
     }
 

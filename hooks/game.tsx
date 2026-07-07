@@ -29,7 +29,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
   }
 
   function gameOver() {
-    console.log("teste");
     router.replace("/game-over");
     try {
       hitAudio.seekTo(0);
