@@ -1,6 +1,7 @@
 import BackgroundSound from "@/components/BackgroundSound";
 import GradientText from "@/components/GradientText";
 import MovingBackground from "@/components/MovingBackground";
+import { useGame } from "@/hooks/game";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
 import {
@@ -9,17 +10,23 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function GameOver() {
+  const { score } = useGame();
+
   return (
     <ImageBackground
       source={require("@/assets/images/background.png")}
       resizeMode="cover"
       style={styles.background}
     >
-      <BackgroundSound source={require("@/assets/audios/background.mp3")} />
+      <BackgroundSound
+        source={require("@/assets/audios/die.mp3")}
+        loop={false}
+      />
       <SafeAreaView style={styles.screen}>
         <GradientText
           colors={["#FF8A00", "#FFD600"]}
@@ -29,6 +36,14 @@ export default function GameOver() {
         >
           Game Over
         </GradientText>
+
+        <View style={styles.score}>
+          <Text style={styles.scoreText}>{score}</Text>
+          <Image
+            source={require("@/assets/images/coin.gif")}
+            style={styles.scoreImage}
+          />
+        </View>
 
         <Link href="/" asChild replace>
           <TouchableOpacity style={styles.button}>
@@ -42,7 +57,7 @@ export default function GameOver() {
         </Link>
 
         <Image
-          source={require("@/assets/images/bird.gif")}
+          source={require("@/assets/images/die.png")}
           style={styles.bird}
         />
       </SafeAreaView>
@@ -99,11 +114,32 @@ const styles = StyleSheet.create({
     fontFamily: "LilitaOne",
   },
   bird: {
-    width: 70,
+    width: (48 * 220) / 232,
     height: 48,
     position: "absolute",
     top: "35%",
     left: "35%",
     transform: [{ rotate: "-20deg" }],
+  },
+  score: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    marginTop: 10,
+  },
+  scoreImage: {
+    height: 40,
+    width: 40,
+  },
+  scoreText: {
+    fontSize: 40,
+    fontFamily: "LilitaOne",
+    textShadowColor: "black",
+    textShadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    textShadowRadius: 1,
+    color: "white",
   },
 });
